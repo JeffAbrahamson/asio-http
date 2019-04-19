@@ -84,7 +84,7 @@ Vagrant.configure("2") do |config|
 
   $script_pre = <<SCRIPT_PRE
     sudo apt-get update
-    sudo apt-get install -y  puppet git
+    sudo apt-get install -y  git
     sudo locale-gen --purge en_GB.UTF-8
     echo -e 'LANG="en_GB.UTF-8"\nLANGUAGE="en_GB.UFT-8"\n' | sudo tee /etc/default/locale
 
@@ -93,7 +93,7 @@ Vagrant.configure("2") do |config|
     if [ ! -d /vagrant/user-provisioner.sh ]; then /vagrant/user-provisioner.sh; fi
 
     if [ ! -d /home/vagrant/bin/ ]; then mkdir /home/vagrant/bin; fi
-    cp /vagrant/puppet/install_gtest /home/vagrant/bin/
+    cp /vagrant/util/install_gtest /home/vagrant/bin/
     chmod 755 /home/vagrant/bin/install_gtest
 SCRIPT_PRE
 

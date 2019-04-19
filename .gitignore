@@ -1,34 +1,19 @@
+# Emacs backup files
+*~
+
+# Vagrant data
+.vagrant
+
 # Prerequisites
 *.d
 
 # Compiled Object files
-*.slo
-*.lo
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
 
 # Compiled Dynamic libraries
 *.so
-*.dylib
-*.dll
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
 http
 TAGS
+ubuntu-xenial-16.04-cloudimg-console.log
+
