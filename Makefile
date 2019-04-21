@@ -55,6 +55,7 @@ OBJ = $(SRC:%.cc=%.o)
 BIN = http
 
 BOOST_LIBS =					\
+	-lboost_program_options			\
 	-lpthread				\
 
 $(BIN): Makefile $(OBJ)
