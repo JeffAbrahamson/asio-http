@@ -31,15 +31,6 @@ $(DEPDIR)/%.d: ;
 CXXFLAGS ?= -ggdb3
 CFLAGS ?= -ggdb3
 
-###########################################################################
-## Targets intended for users.
-
-all: http
-
-clean: 
-	rm -f src/*.o
-	rm -rf http
-
 SRC_FILES =			\
 	connection.cc 		\
 	connection_manager.cc 	\
@@ -54,12 +45,27 @@ SRC = $(SRC_FILES:%.cc=src/%.cc)
 OBJ = $(SRC:%.cc=%.o)
 BIN = http
 
+###########################################################################
+## Targets intended for users.
+
+all: $(BIN) TAGS
+
+clean:
+	rm -f src/*.o
+	rm -rf http
+
+###########################################################################
+## Build http
+
 BOOST_LIBS =					\
 	-lboost_program_options			\
 	-lpthread				\
 
 $(BIN): Makefile $(OBJ)
 	$(LINK.cc) -o $@ $(OBJ) $(BOOST_LIBS)
+
+TAGS:
+	etags src/*h src/*cc > src/TAGS
 
 ###########################################################################
 ## Include dependency information computed at top of makefile.
