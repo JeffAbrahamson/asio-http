@@ -18,7 +18,7 @@
 namespace http {
 namespace server {
 
-server::server(const std::string& address, const std::string& port,
+Server::Server(const std::string& address, const std::string& port,
                const std::string& doc_root)
     : io_service_(),
       signals_(io_service_),
@@ -35,7 +35,7 @@ server::server(const std::string& address, const std::string& port,
     signals_.add(SIGQUIT);
 #endif  // defined(SIGQUIT)
 
-    do_await_stop();
+    DoAwaitStop();
 
     // Open the acceptor with the option to reuse the address (i.e.
     // SO_REUSEADDR).
@@ -46,10 +46,10 @@ server::server(const std::string& address, const std::string& port,
     acceptor_.bind(endpoint);
     acceptor_.listen();
 
-    do_accept();
+    DoAccept();
 }
 
-void server::run() {
+void Server::Run() {
     // The io_service::run() call will block until all asynchronous operations
     // have finished. While the server is running, there is always at least one
     // asynchronous operation outstanding: the asynchronous accept call waiting
@@ -57,7 +57,7 @@ void server::run() {
     io_service_.run();
 }
 
-void server::do_accept() {
+void Server::DoAccept() {
     acceptor_.async_accept(socket_, [this](std::error_code ec) {
         // Check whether the server was stopped by a signal before this
         // completion handler had a chance to run.
@@ -70,11 +70,11 @@ void server::do_accept() {
                 std::move(socket_), connection_manager_, request_handler_));
         }
 
-        do_accept();
+        DoAccept();
     });
 }
 
-void server::do_await_stop() {
+void Server::DoAwaitStop() {
     signals_.async_wait([this](std::error_code /*ec*/, int /*signo*/) {
         // The server is stopped by cancelling all outstanding asynchronous
         // operations. Once all operations have finished the io_service::run()

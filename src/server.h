@@ -24,26 +24,26 @@ namespace http {
 namespace server {
 
 /// The top-level class of the HTTP server.
-class server {
+class Server {
    public:
-    server(const server&) = delete;
-    server& operator=(const server&) = delete;
+    Server(const Server&) = delete;
+    Server& operator=(const Server&) = delete;
 
     /// Construct the server to listen on the specified TCP address and port,
     /// and
     /// serve up files from the given directory.
-    explicit server(const std::string& address, const std::string& port,
+    explicit Server(const std::string& address, const std::string& port,
                     const std::string& doc_root);
 
     /// Run the server's io_service loop.
-    void run();
+    void Run();
 
    private:
     /// Perform an asynchronous accept operation.
-    void do_accept();
+    void DoAccept();
 
     /// Wait for a request to stop the server.
-    void do_await_stop();
+    void DoAwaitStop();
 
     /// The io_service used to perform asynchronous operations.
     asio::io_service io_service_;
