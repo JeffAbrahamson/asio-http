@@ -37,7 +37,7 @@ CFLAGS ?= -ggdb3
 all: http
 
 clean: 
-	rm -f *.o
+	rm -f src/*.o
 	rm -rf http
 
 SRC_FILES =			\
