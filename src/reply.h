@@ -23,7 +23,7 @@ namespace http {
 namespace server {
 
 // A reply to be sent to a client.
-struct reply {
+struct Reply {
     // The status of the reply.
     enum status_type {
         ok = 200,
@@ -45,7 +45,7 @@ struct reply {
     } status;
 
     // The headers to be included in the reply.
-    std::vector<header> headers;
+    std::vector<Header> headers;
 
     // The content to be sent in the reply.
     std::string content;
@@ -56,10 +56,10 @@ struct reply {
       must remain valid and not be changed until the write operation
       has completed.
     */
-    std::vector<asio::const_buffer> to_buffers();
+    std::vector<asio::const_buffer> ToBuffers();
 
     // Get a stock reply.
-    static reply stock_reply(status_type status);
+    static Reply StockReply(status_type status);
 };
 
 }  // namespace server

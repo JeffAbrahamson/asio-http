@@ -35,7 +35,7 @@ class Connection : public std::enable_shared_from_this<Connection> {
 
     /// Construct a connection with the given socket.
     explicit Connection(asio::ip::tcp::socket socket,
-                        ConnectionManager& manager, request_handler& handler);
+                        ConnectionManager& manager, RequestHandler& handler);
 
     /// Start the first asynchronous operation for the connection.
     void Start();
@@ -57,7 +57,7 @@ class Connection : public std::enable_shared_from_this<Connection> {
     ConnectionManager& connection_manager_;
 
     /// The handler used to process the incoming request.
-    request_handler& request_handler_;
+    RequestHandler& request_handler_;
 
     /// Buffer for incoming data.
     std::array<char, 8192> buffer_;
@@ -69,7 +69,7 @@ class Connection : public std::enable_shared_from_this<Connection> {
     RequestParser request_parser_;
 
     /// The reply to be sent back to the client.
-    reply reply_;
+    Reply reply_;
 };
 
 typedef std::shared_ptr<Connection> connection_ptr;

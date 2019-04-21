@@ -62,7 +62,7 @@ class Server {
     asio::ip::tcp::socket socket_;
 
     /// The handler for all incoming requests.
-    request_handler request_handler_;
+    RequestHandler request_handler_;
 };
 
 }  // namespace server
