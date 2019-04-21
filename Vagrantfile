@@ -84,7 +84,7 @@ Vagrant.configure("2") do |config|
 
   $script_pre = <<SCRIPT_PRE
     sudo apt-get update
-    sudo apt-get install -y  git libboost-all-dev emacs
+    sudo apt-get install -y  git libboost-all-dev emacs gdb gdb-doc
     sudo locale-gen --purge en_GB.UTF-8
     echo -e 'LANG="en_GB.UTF-8"\nLANGUAGE="en_GB.UFT-8"\n' | sudo tee /etc/default/locale
 
