@@ -48,7 +48,7 @@ BIN = http
 ###########################################################################
 ## Targets intended for users.
 
-all: $(BIN) TAGS
+all: $(BIN) src/TAGS
 
 clean:
 	rm -f src/*.o
@@ -64,8 +64,8 @@ BOOST_LIBS =					\
 $(BIN): Makefile $(OBJ)
 	$(LINK.cc) -o $@ $(OBJ) $(BOOST_LIBS)
 
-TAGS:
-	etags src/*h src/*cc > src/TAGS
+src/TAGS:
+	(cd src && etags *h *cc > TAGS)
 
 ###########################################################################
 ## Include dependency information computed at top of makefile.
