@@ -19,7 +19,7 @@ namespace http {
 namespace server {
 
 struct reply;
-struct request;
+struct Request;
 
 /// The common handler for all incoming requests.
 class request_handler {
@@ -31,7 +31,7 @@ class request_handler {
     explicit request_handler(const std::string& doc_root);
 
     /// Handle a request and produce a reply.
-    void handle_request(const request& req, reply& rep);
+    void handle_request(const Request& req, reply& rep);
 
    private:
     /// The directory containing the files to be served.

@@ -18,16 +18,16 @@
 namespace http {
 namespace server {
 
-struct request;
+struct Request;
 
 /// Parser for incoming requests.
-class request_parser {
+class RequestParser {
    public:
     // Construct ready to parse the request method.
-    request_parser();
+    RequestParser();
 
     // Reset to initial parser state.
-    void reset();
+    void Reset();
 
     // Result of parse.
     enum result_type { good, bad, indeterminate };
@@ -39,11 +39,11 @@ class request_parser {
       return value indicates how much of the input has been consumed.
     */
     template <typename InputIterator>
-    std::tuple<result_type, InputIterator> parse(request& req,
+    std::tuple<result_type, InputIterator> parse(Request& req,
                                                  InputIterator begin,
                                                  InputIterator end) {
         while (begin != end) {
-            result_type result = consume(req, *begin++);
+            result_type result = Consume(req, *begin++);
             if (result == good || result == bad)
                 return std::make_tuple(result, begin);
         }
@@ -52,19 +52,19 @@ class request_parser {
 
    private:
     // Handle the next character of input.
-    result_type consume(request& req, char input);
+    result_type Consume(Request& req, char input);
 
     // Check if a byte is an HTTP character.
-    static bool is_char(int c);
+    static bool IsChar(int c);
 
     // Check if a byte is an HTTP control character.
-    static bool is_ctl(int c);
+    static bool IsCtl(int c);
 
     // Check if a byte is defined as an HTTP tspecial character.
-    static bool is_tspecial(int c);
+    static bool IsTspecial(int c);
 
     // Check if a byte is a digit.
-    static bool is_digit(int c);
+    static bool IsDigit(int c);
 
     // The current state of the parser.
     enum state {

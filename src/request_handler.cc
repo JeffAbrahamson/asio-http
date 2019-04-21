@@ -26,7 +26,7 @@ namespace server {
 request_handler::request_handler(const std::string& doc_root)
     : doc_root_(doc_root) {}
 
-void request_handler::handle_request(const request& req, reply& rep) {
+void request_handler::handle_request(const Request& req, reply& rep) {
     // Decode url to path.
     std::string request_path;
     if (!url_decode(req.uri, request_path)) {

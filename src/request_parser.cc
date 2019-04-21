@@ -16,14 +16,14 @@
 namespace http {
 namespace server {
 
-request_parser::request_parser() : state_(method_start) {}
+RequestParser::RequestParser() : state_(method_start) {}
 
-void request_parser::reset() { state_ = method_start; }
+void RequestParser::Reset() { state_ = method_start; }
 
-request_parser::result_type request_parser::consume(request& req, char input) {
+RequestParser::result_type RequestParser::Consume(Request& req, char input) {
     switch (state_) {
         case method_start:
-            if (!is_char(input) || is_ctl(input) || is_tspecial(input)) {
+            if (!IsChar(input) || IsCtl(input) || IsTspecial(input)) {
                 return bad;
             } else {
                 state_ = method;
@@ -34,7 +34,7 @@ request_parser::result_type request_parser::consume(request& req, char input) {
             if (input == ' ') {
                 state_ = uri;
                 return indeterminate;
-            } else if (!is_char(input) || is_ctl(input) || is_tspecial(input)) {
+            } else if (!IsChar(input) || IsCtl(input) || IsTspecial(input)) {
                 return bad;
             } else {
                 req.method.push_back(input);
@@ -44,7 +44,7 @@ request_parser::result_type request_parser::consume(request& req, char input) {
             if (input == ' ') {
                 state_ = http_version_h;
                 return indeterminate;
-            } else if (is_ctl(input)) {
+            } else if (IsCtl(input)) {
                 return bad;
             } else {
                 req.uri.push_back(input);
@@ -88,7 +88,7 @@ request_parser::result_type request_parser::consume(request& req, char input) {
                 return bad;
             }
         case http_version_major_start:
-            if (is_digit(input)) {
+            if (IsDigit(input)) {
                 req.http_version_major =
                     req.http_version_major * 10 + input - '0';
                 state_ = http_version_major;
@@ -100,7 +100,7 @@ request_parser::result_type request_parser::consume(request& req, char input) {
             if (input == '.') {
                 state_ = http_version_minor_start;
                 return indeterminate;
-            } else if (is_digit(input)) {
+            } else if (IsDigit(input)) {
                 req.http_version_major =
                     req.http_version_major * 10 + input - '0';
                 return indeterminate;
@@ -108,7 +108,7 @@ request_parser::result_type request_parser::consume(request& req, char input) {
                 return bad;
             }
         case http_version_minor_start:
-            if (is_digit(input)) {
+            if (IsDigit(input)) {
                 req.http_version_minor =
                     req.http_version_minor * 10 + input - '0';
                 state_ = http_version_minor;
@@ -120,7 +120,7 @@ request_parser::result_type request_parser::consume(request& req, char input) {
             if (input == '\r') {
                 state_ = expecting_newline_1;
                 return indeterminate;
-            } else if (is_digit(input)) {
+            } else if (IsDigit(input)) {
                 req.http_version_minor =
                     req.http_version_minor * 10 + input - '0';
                 return indeterminate;
@@ -142,7 +142,7 @@ request_parser::result_type request_parser::consume(request& req, char input) {
                        (input == ' ' || input == '\t')) {
                 state_ = header_lws;
                 return indeterminate;
-            } else if (!is_char(input) || is_ctl(input) || is_tspecial(input)) {
+            } else if (!IsChar(input) || IsCtl(input) || IsTspecial(input)) {
                 return bad;
             } else {
                 req.headers.push_back(header());
@@ -156,7 +156,7 @@ request_parser::result_type request_parser::consume(request& req, char input) {
                 return indeterminate;
             } else if (input == ' ' || input == '\t') {
                 return indeterminate;
-            } else if (is_ctl(input)) {
+            } else if (IsCtl(input)) {
                 return bad;
             } else {
                 state_ = header_value;
@@ -167,7 +167,7 @@ request_parser::result_type request_parser::consume(request& req, char input) {
             if (input == ':') {
                 state_ = space_before_header_value;
                 return indeterminate;
-            } else if (!is_char(input) || is_ctl(input) || is_tspecial(input)) {
+            } else if (!IsChar(input) || IsCtl(input) || IsTspecial(input)) {
                 return bad;
             } else {
                 req.headers.back().name.push_back(input);
@@ -184,7 +184,7 @@ request_parser::result_type request_parser::consume(request& req, char input) {
             if (input == '\r') {
                 state_ = expecting_newline_2;
                 return indeterminate;
-            } else if (is_ctl(input)) {
+            } else if (IsCtl(input)) {
                 return bad;
             } else {
                 req.headers.back().value.push_back(input);
@@ -204,11 +204,11 @@ request_parser::result_type request_parser::consume(request& req, char input) {
     }
 }
 
-bool request_parser::is_char(int c) { return c >= 0 && c <= 127; }
+bool RequestParser::IsChar(int c) { return c >= 0 && c <= 127; }
 
-bool request_parser::is_ctl(int c) { return (c >= 0 && c <= 31) || (c == 127); }
+bool RequestParser::IsCtl(int c) { return (c >= 0 && c <= 31) || (c == 127); }
 
-bool request_parser::is_tspecial(int c) {
+bool RequestParser::IsTspecial(int c) {
     switch (c) {
         case '(':
         case ')':
@@ -235,7 +235,7 @@ bool request_parser::is_tspecial(int c) {
     }
 }
 
-bool request_parser::is_digit(int c) { return c >= '0' && c <= '9'; }
+bool RequestParser::IsDigit(int c) { return c >= '0' && c <= '9'; }
 
 }  // namespace server
 }  // namespace http
