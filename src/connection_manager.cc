@@ -15,19 +15,19 @@
 namespace http {
 namespace server {
 
-connection_manager::connection_manager() {}
+ConnectionManager::ConnectionManager() {}
 
-void connection_manager::start(connection_ptr c) {
+void ConnectionManager::Start(connection_ptr c) {
     connections_.insert(c);
     c->start();
 }
 
-void connection_manager::stop(connection_ptr c) {
+void ConnectionManager::Stop(connection_ptr c) {
     connections_.erase(c);
     c->stop();
 }
 
-void connection_manager::stop_all() {
+void ConnectionManager::StopAll() {
     for (auto c : connections_) c->stop();
     connections_.clear();
 }

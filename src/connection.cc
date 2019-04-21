@@ -22,7 +22,7 @@ namespace http {
 namespace server {
 
 connection::connection(asio::ip::tcp::socket socket,
-                       connection_manager& manager, request_handler& handler)
+                       ConnectionManager& manager, request_handler& handler)
     : socket_(std::move(socket)),
       connection_manager_(manager),
       request_handler_(handler) {}
@@ -52,7 +52,7 @@ void connection::do_read() {
                     do_read();
                 }
             } else if (ec != asio::error::operation_aborted) {
-                connection_manager_.stop(shared_from_this());
+                connection_manager_.Stop(shared_from_this());
             }
         });
 }
@@ -69,7 +69,7 @@ void connection::do_write() {
         }
 
         if (ec != asio::error::operation_aborted) {
-            connection_manager_.stop(shared_from_this());
+            connection_manager_.Stop(shared_from_this());
         }
     });
 }

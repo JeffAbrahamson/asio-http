@@ -66,7 +66,7 @@ void Server::DoAccept() {
         }
 
         if (!ec) {
-            connection_manager_.start(std::make_shared<connection>(
+            connection_manager_.Start(std::make_shared<connection>(
                 std::move(socket_), connection_manager_, request_handler_));
         }
 
@@ -80,7 +80,7 @@ void Server::DoAwaitStop() {
         // operations. Once all operations have finished the io_service::run()
         // call will exit.
         acceptor_.close();
-        connection_manager_.stop_all();
+        connection_manager_.StopAll();
     });
 }
 
