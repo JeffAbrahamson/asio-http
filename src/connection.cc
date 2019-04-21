@@ -21,17 +21,17 @@
 namespace http {
 namespace server {
 
-connection::connection(asio::ip::tcp::socket socket,
+Connection::Connection(asio::ip::tcp::socket socket,
                        ConnectionManager& manager, request_handler& handler)
     : socket_(std::move(socket)),
       connection_manager_(manager),
       request_handler_(handler) {}
 
-void connection::start() { do_read(); }
+void Connection::Start() { DoRead(); }
 
-void connection::stop() { socket_.close(); }
+void Connection::Stop() { socket_.close(); }
 
-void connection::do_read() {
+void Connection::DoRead() {
     auto self(shared_from_this());
     socket_.async_read_some(
         asio::buffer(buffer_),
@@ -44,12 +44,12 @@ void connection::do_read() {
 
                 if (result == request_parser::good) {
                     request_handler_.handle_request(request_, reply_);
-                    do_write();
+                    DoWrite();
                 } else if (result == request_parser::bad) {
                     reply_ = reply::stock_reply(reply::bad_request);
-                    do_write();
+                    DoWrite();
                 } else {
-                    do_read();
+                    DoRead();
                 }
             } else if (ec != asio::error::operation_aborted) {
                 connection_manager_.Stop(shared_from_this());
@@ -57,7 +57,7 @@ void connection::do_read() {
         });
 }
 
-void connection::do_write() {
+void Connection::DoWrite() {
     auto self(shared_from_this());
     asio::async_write(socket_, reply_.to_buffers(), [this, self](
                                                         std::error_code ec,

@@ -19,16 +19,16 @@ ConnectionManager::ConnectionManager() {}
 
 void ConnectionManager::Start(connection_ptr c) {
     connections_.insert(c);
-    c->start();
+    c->Start();
 }
 
 void ConnectionManager::Stop(connection_ptr c) {
     connections_.erase(c);
-    c->stop();
+    c->Stop();
 }
 
 void ConnectionManager::StopAll() {
-    for (auto c : connections_) c->stop();
+    for (auto c : connections_) c->Stop();
     connections_.clear();
 }
 

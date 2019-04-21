@@ -28,27 +28,27 @@ namespace server {
 class ConnectionManager;
 
 /// Represents a single connection from a client.
-class connection : public std::enable_shared_from_this<connection> {
+class Connection : public std::enable_shared_from_this<Connection> {
    public:
-    connection(const connection&) = delete;
-    connection& operator=(const connection&) = delete;
+    Connection(const Connection&) = delete;
+    Connection& operator=(const Connection&) = delete;
 
     /// Construct a connection with the given socket.
-    explicit connection(asio::ip::tcp::socket socket,
+    explicit Connection(asio::ip::tcp::socket socket,
                         ConnectionManager& manager, request_handler& handler);
 
     /// Start the first asynchronous operation for the connection.
-    void start();
+    void Start();
 
     /// Stop all asynchronous operations associated with the connection.
-    void stop();
+    void Stop();
 
    private:
     /// Perform an asynchronous read operation.
-    void do_read();
+    void DoRead();
 
     /// Perform an asynchronous write operation.
-    void do_write();
+    void DoWrite();
 
     /// Socket for the connection.
     asio::ip::tcp::socket socket_;
@@ -72,7 +72,7 @@ class connection : public std::enable_shared_from_this<connection> {
     reply reply_;
 };
 
-typedef std::shared_ptr<connection> connection_ptr;
+typedef std::shared_ptr<Connection> connection_ptr;
 
 }  // namespace server
 }  // namespace http
