@@ -37,7 +37,7 @@ void Connection::DoRead() {
       [this, self](std::error_code ec, std::size_t bytes_transferred) {
         if (!ec) {
           RequestParser::result_type result;
-          std::tie(result, std::ignore) = request_parser_.parse(
+          std::tie(result, std::ignore) = request_parser_.Parse(
               request_, buffer_.data(), buffer_.data() + bytes_transferred);
 
           if (result == RequestParser::good) {

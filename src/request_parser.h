@@ -39,7 +39,7 @@ class RequestParser {
       return value indicates how much of the input has been consumed.
     */
     template <typename InputIterator>
-    std::tuple<result_type, InputIterator> parse(Request& req,
+    std::tuple<result_type, InputIterator> Parse(Request& req,
                                                  InputIterator begin,
                                                  InputIterator end) {
         while (begin != end) {
